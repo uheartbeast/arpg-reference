@@ -1,0 +1,6 @@
+[gd_scene format=2]
+
+[node name="World" type="Node2D"]
+__meta__ = {
+"_edit_lock_": true
+}
