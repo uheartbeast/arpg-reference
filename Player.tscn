@@ -308,7 +308,7 @@ ACCELERATION = 1000
 position = Vector2( 0, -9 )
 texture = ExtResource( 2 )
 hframes = 30
-frame = 11
+frame = 9
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 rotation = -1.5708
