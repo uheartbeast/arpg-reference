@@ -13,9 +13,11 @@ var velocity = Vector2.ZERO
 var state = MOVE
 
 onready var sprite = $Sprite
+onready var swordHitboxAxis = $SwordHitboxAxis
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
+
 
 func _physics_process(delta):
 	match state:
@@ -35,6 +37,16 @@ func _physics_process(delta):
 				animationTree.set("parameters/Idle/blend_position", input_vector)
 				animationTree.set("parameters/Run/blend_position", input_vector)
 				animationTree.set("parameters/Attack/blend_position", input_vector)
+				
+				if input_vector.x > 0:
+					swordHitboxAxis.rotation_degrees = 0
+				elif input_vector.x < 0:
+					swordHitboxAxis.rotation_degrees = 180
+				else:
+					if input_vector.y > 0:
+						swordHitboxAxis.rotation_degrees = 90
+					else:
+						swordHitboxAxis.rotation_degrees = -90
 				
 				
 				velocity += input_vector * ACCELERATION * delta
