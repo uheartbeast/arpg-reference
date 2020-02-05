@@ -12,6 +12,7 @@ export(float) var FRICTION = 0.4
 var state = MOVE
 var velocity = Vector2.ZERO
 var input_vector = Vector2.ZERO
+var is_attack_finished = false
 
 onready var sprite = $Sprite
 onready var swordHitboxAxis = $SwordHitboxAxis
@@ -45,6 +46,7 @@ func _process(delta):
 func change_state_to(new_state):
 	state = new_state
 func update_input_vector():
+	input_vector = Vector2.ZERO
 	input_vector.x =  Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	input_vector = input_vector.normalized()

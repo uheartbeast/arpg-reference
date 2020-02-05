@@ -308,8 +308,6 @@ blend_mode = 1
 [sub_resource type="AnimationNodeStateMachineTransition" id=27]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=28]
-switch_mode = 2
-auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=29]
 
@@ -340,6 +338,7 @@ ACCELERATION = 1000
 position = Vector2( 0, -9 )
 texture = ExtResource( 2 )
 hframes = 30
+frame = 6
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -2 )
@@ -351,11 +350,13 @@ position = Vector2( 0, -2 )
 
 [node name="SwordHitbox" parent="SwordHitboxAxis" instance=ExtResource( 3 )]
 position = Vector2( 16, 0 )
+collision_mask = 0
 
 [node name="CollisionShape2D" parent="SwordHitboxAxis/SwordHitbox" index="0"]
 shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_process_mode = 0
 anims/AttackDown = SubResource( 3 )
 anims/AttackSide = SubResource( 4 )
 anims/AttackUp = SubResource( 5 )
@@ -372,7 +373,7 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 32 )
 parameters/Attack/blend_position = Vector2( 0, 0 )
-parameters/Idle/blend_position = Vector2( -0.0140625, 0.233781 )
+parameters/Idle/blend_position = Vector2( 0, 0 )
 parameters/Run/blend_position = Vector2( 0, 0 )
 
 [editable path="SwordHitboxAxis/SwordHitbox"]
