@@ -324,7 +324,7 @@ states/Run/node = SubResource( 26 )
 states/Run/position = Vector2( 296, 218 )
 transitions = [ "Idle", "Attack", SubResource( 27 ), "Attack", "Idle", SubResource( 28 ), "Idle", "Run", SubResource( 29 ), "Run", "Idle", SubResource( 30 ) ]
 start_node = "Idle"
-graph_offset = Vector2( -182, -30 )
+graph_offset = Vector2( -235, -38 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=32]
 
@@ -351,7 +351,6 @@ position = Vector2( 0, -2 )
 
 [node name="SwordHitbox" parent="SwordHitboxAxis" instance=ExtResource( 3 )]
 position = Vector2( 16, 0 )
-collision_mask = 0
 
 [node name="CollisionShape2D" parent="SwordHitboxAxis/SwordHitbox" index="0"]
 shape = SubResource( 2 )
