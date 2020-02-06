@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 enum {
 	MOVE,
+	ROLL,
 	ATTACK
 }
 
