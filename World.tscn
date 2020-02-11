@@ -30,28 +30,7 @@ position = Vector2( 144, 80 )
 position = Vector2( 160, 48 )
 
 [node name="Bat2" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 144, 48 )
-
-[node name="Bat3" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 144, 32 )
-
-[node name="Bat4" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 160, 32 )
-
-[node name="Bat5" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 176, 32 )
-
-[node name="Bat6" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 176, 48 )
-
-[node name="Bat7" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 176, 64 )
-
-[node name="Bat8" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 160, 64 )
-
-[node name="Bat9" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 144, 64 )
+position = Vector2( 16, 160 )
 
 [node name="Trees" type="YSort" parent="YSort"]
 
@@ -115,3 +94,10 @@ position = Vector2( 64, 48 )
 
 [node name="Grass7" parent="YSort/Grass" instance=ExtResource( 5 )]
 position = Vector2( 176, 128 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PoolVector2Array( -32, 0, 0, 0, 0, 176, 320, 176, 320, 0, -64, 0, -64, -32, 352, -32, 352, 208, -32, 208 )
