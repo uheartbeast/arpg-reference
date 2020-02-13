@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://PlayerDetectionZone.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
 
 [node name="PlayerDetectionZone" type="Area2D"]
 collision_layer = 0
@@ -13,8 +12,5 @@ script = ExtResource( 1 )
 enabled = true
 cast_to = Vector2( 16, 0 )
 collision_mask = 2
-
-[node name="Sprite" type="Sprite" parent="."]
-texture = ExtResource( 2 )
 [connection signal="body_entered" from="." to="." method="_on_PlayerDetectionZone_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_PlayerDetectionZone_body_exited"]

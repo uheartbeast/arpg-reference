@@ -27,7 +27,7 @@ __meta__ = {
 position = Vector2( 144, 80 )
 
 [node name="Bat" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 160, 48 )
+position = Vector2( 256, 40 )
 
 [node name="Bat2" parent="YSort" instance=ExtResource( 6 )]
 position = Vector2( 16, 160 )

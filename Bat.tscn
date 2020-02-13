@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Sprites/Enemies/Bat.png" type="Texture" id=1]
 [ext_resource path="res://Sprites/Misc/SmallShadow.png" type="Texture" id=2]
@@ -37,6 +37,24 @@ height = 6.0
 [sub_resource type="CircleShape2D" id=5]
 radius = 80.1561
 
+[sub_resource type="GDScript" id=6]
+script/source = "extends Node2D
+
+onready var start_position = global_position
+onready var target_position = global_position setget ,get_target_position
+
+func get_target_position():
+	return target_position
+
+func update_target_position():
+	var target_vector = Vector2(rand_range(-32, 32), rand_range(-32, 32))
+	target_position = start_position + target_vector
+
+func _on_StateTimer_timeout():
+	update_target_position()
+	print(target_position)
+"
+
 [node name="Bat" type="KinematicBody2D"]
 collision_layer = 16
 collision_mask = 2
@@ -74,7 +92,15 @@ position = Vector2( 0, -13 )
 
 [node name="CollisionShape2D" parent="PlayerDetectionZone" index="0"]
 shape = SubResource( 5 )
+
+[node name="StateTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="WanderController" type="Node2D" parent="."]
+script = SubResource( 6 )
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
+[connection signal="timeout" from="StateTimer" to="WanderController" method="_on_StateTimer_timeout"]
 
 [editable path="SoftCollision"]
 
