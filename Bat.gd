@@ -11,15 +11,12 @@ enum {
 
 var velocity = Vector2.ZERO
 var knockback = Vector2.ZERO
-var state = WANDER
-#var wander_vector = Vector2.ZERO
 
-onready var start_position = global_position
+var state = IDLE
 
 onready var sprite = $Sprite
 onready var softCollision = $SoftCollision
 onready var playerDetectionZone = $PlayerDetectionZone
-onready var wanderPoint = $Node/WanderPoint
 
 func _physics_process(delta):
 	# Friction
@@ -28,27 +25,13 @@ func _physics_process(delta):
 	
 	match state:
 		IDLE:
-			# Look for the player
-			if playerDetectionZone.can_see_player():
-				state = CHASE
+			pass
 		
 		WANDER:
-			# Look for the player
-			if playerDetectionZone.can_see_player():
-				state = CHASE
-			sprite.flip_h = wanderPoint.position.x < 0
-			velocity += (wanderPoint.global_position - global_position).normalized() * ACCELERATION * delta
-			velocity = velocity.clamped(MAX_SPEED)
+			pass
 		
 		CHASE:
-			var player = playerDetectionZone.get_player()
-			if player != null:
-				var acceleration = (player.global_position - global_position).normalized() * ACCELERATION * delta
-				sprite.flip_h = acceleration.x < 0
-				velocity += acceleration
-				velocity = velocity.clamped(MAX_SPEED)
-			else:
-				state = WANDER
+			pass
 	
 	# Push
 	if softCollision.is_colliding():
