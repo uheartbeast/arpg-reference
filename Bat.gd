@@ -23,7 +23,6 @@ onready var wanderController = $WanderController
 func _physics_process(delta):
 	# Friction
 	velocity = velocity.linear_interpolate(Vector2.ZERO, 0.1)
-	knockback = knockback.linear_interpolate(Vector2.ZERO, 0.2)
 	
 	match state:
 		IDLE:
@@ -41,7 +40,6 @@ func _physics_process(delta):
 			if (wanderController.get_target_position() - global_position).length() < 4:
 				state = Utils.choose([IDLE, WANDER])
 				stateTimer.start(rand_range(1, 3))
-			
 			
 		CHASE:
 			var player = playerDetectionZone.get_player()
@@ -68,6 +66,7 @@ func accelerate(acceleration_vector):
 func accelerate_to_point(point, acceleration_scalar):
 	var direction = (point - global_position).normalized()
 	var acceleration_vector = direction * acceleration_scalar
+	sprite.flip_h = acceleration_vector.x < 0
 	accelerate(acceleration_vector)
 
 func update_position():
@@ -76,4 +75,4 @@ func update_position():
 func _on_Hurtbox_area_entered(area):
 	# Knockback
 	var knockback_vector = area.get_parent().get_parent().roll_vector # TODO: Clean this
-	knockback += knockback_vector * 500
+	velocity += knockback_vector * 200

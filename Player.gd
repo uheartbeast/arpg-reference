@@ -12,8 +12,10 @@ export(float) var FRICTION = 0.4
 
 var state = MOVE
 var velocity = Vector2.ZERO
+var knockback = Vector2.ZERO
 var input_vector = Vector2.ZERO
 var roll_vector = Vector2.RIGHT
+var invincible = false
 
 onready var sprite = $Sprite
 onready var swordHitboxAxis = $SwordHitboxAxis
@@ -23,6 +25,8 @@ onready var softCollision = $SoftCollision
 onready var animationState = animationTree.get("parameters/playback")
 
 func _process(delta):
+	knockback = knockback.linear_interpolate(Vector2.ZERO, 0.2)
+	
 	if softCollision.is_colliding():
 		velocity += softCollision.get_push_vector() * delta * 400
 	
@@ -118,10 +122,16 @@ func apply_friction():
 	velocity = velocity.linear_interpolate(Vector2.ZERO, FRICTION)
 
 func move():
-	velocity = move_and_slide(velocity)
+	velocity = move_and_slide(velocity + knockback)
 
 func end_attack():
 	change_state_to(MOVE)
 
 func end_roll():
 	change_state_to(MOVE)
+
+func _on_Hurtbox_area_entered(area):
+	if invincible != true:
+		knockback = (global_position - area.global_position).normalized() * 200
+		$HitAnimationPlayer.play("Blink")
+		invincible = true

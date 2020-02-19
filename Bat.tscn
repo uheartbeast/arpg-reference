@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Sprites/Enemies/Bat.png" type="Texture" id=1]
 [ext_resource path="res://Sprites/Misc/SmallShadow.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Bat.gd" type="Script" id=4]
 [ext_resource path="res://Hurtbox.tscn" type="PackedScene" id=5]
 [ext_resource path="res://PlayerDetectionZone.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Hitbox.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 6.0
@@ -35,7 +36,7 @@ radius = 6.0
 height = 6.0
 
 [sub_resource type="CircleShape2D" id=5]
-radius = 80.1561
+radius = 64.0703
 
 [sub_resource type="GDScript" id=6]
 script/source = "extends Node2D
@@ -52,8 +53,10 @@ func update_target_position():
 
 func _on_StateTimer_timeout():
 	update_target_position()
-	print(target_position)
 "
+
+[sub_resource type="CircleShape2D" id=7]
+radius = 4.0
 
 [node name="Bat" type="KinematicBody2D"]
 collision_layer = 16
@@ -64,7 +67,9 @@ script = ExtResource( 4 )
 texture = ExtResource( 1 )
 offset = Vector2( 0, -12 )
 hframes = 5
-frame = 4
+
+[node name="ShadowSprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -72,9 +77,6 @@ shape = SubResource( 1 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Fly"
 anims/Fly = SubResource( 2 )
-
-[node name="ShadowSprite" type="Sprite" parent="AnimationPlayer"]
-texture = ExtResource( 2 )
 
 [node name="SoftCollision" parent="." instance=ExtResource( 3 )]
 
@@ -99,6 +101,13 @@ autostart = true
 
 [node name="WanderController" type="Node2D" parent="."]
 script = SubResource( 6 )
+
+[node name="Hitbox" parent="." instance=ExtResource( 7 )]
+collision_mask = 4
+
+[node name="CollisionShape2D" parent="Hitbox" index="0"]
+position = Vector2( 0, -16 )
+shape = SubResource( 7 )
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
 [connection signal="timeout" from="StateTimer" to="WanderController" method="_on_StateTimer_timeout"]
 
@@ -107,3 +116,5 @@ script = SubResource( 6 )
 [editable path="Hurtbox"]
 
 [editable path="PlayerDetectionZone"]
+
+[editable path="Hitbox"]
