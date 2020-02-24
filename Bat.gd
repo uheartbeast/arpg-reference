@@ -21,11 +21,14 @@ onready var stateTimer = $StateTimer
 onready var wanderController = $WanderController
 
 func _physics_process(delta):
-	# Friction
-	velocity = velocity.linear_interpolate(Vector2.ZERO, 0.1)
+	
+	knockback = knockback.linear_interpolate(Vector2.ZERO, 0.1)
 	
 	match state:
 		IDLE:
+			# Friction
+			velocity = velocity.linear_interpolate(Vector2.ZERO, 0.1)
+			
 			seek_player()
 			if stateTimer.time_left == 0:
 				state = Utils.choose([IDLE, WANDER])
@@ -75,4 +78,4 @@ func update_position():
 func _on_Hurtbox_area_entered(area):
 	# Knockback
 	var knockback_vector = area.get_parent().get_parent().roll_vector # TODO: Clean this
-	velocity += knockback_vector * 200
+	knockback = knockback_vector * 400
