@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Sprites/World/GrassTile.png" type="Texture" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
@@ -6,25 +6,40 @@
 [ext_resource path="res://Tree.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Grass.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Bat.tscn" type="PackedScene" id=6]
+[ext_resource path="res://DirtWallTiles.tscn" type="PackedScene" id=7]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+void fragment() {
+	COLOR = texture(TEXTURE, UV);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 
 [node name="World" type="Node2D"]
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Background" type="TextureRect" parent="."]
-margin_right = 320.0
-margin_bottom = 180.0
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 144, 80 )
+current = true
+
+[node name="BackgroundSprite" type="Sprite" parent="Camera2D"]
+material = SubResource( 2 )
+scale = Vector2( 5.5, 3.5 )
 texture = ExtResource( 1 )
-stretch_mode = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="YSort" type="YSort" parent="."]
+z_index = 1
 
 [node name="Player" parent="YSort" instance=ExtResource( 2 )]
 position = Vector2( 144, 80 )
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="YSort/Player"]
+remote_path = NodePath("../../../Camera2D")
 
 [node name="Bat" parent="YSort" instance=ExtResource( 6 )]
 position = Vector2( 256, 40 )
@@ -35,42 +50,36 @@ position = Vector2( 16, 160 )
 [node name="Trees" type="YSort" parent="YSort"]
 
 [node name="Tree" parent="YSort/Trees" instance=ExtResource( 4 )]
-position = Vector2( 67, 134 )
+position = Vector2( 16, 80 )
 
 [node name="Tree2" parent="YSort/Trees" instance=ExtResource( 4 )]
-position = Vector2( 208, 64 )
+position = Vector2( 149, 21 )
 
 [node name="Tree3" parent="YSort/Trees" instance=ExtResource( 4 )]
-position = Vector2( 240, 112 )
+position = Vector2( 280, 119 )
 
 [node name="Tree4" parent="YSort/Trees" instance=ExtResource( 4 )]
-position = Vector2( 256, 128 )
+position = Vector2( 127, 9 )
 
 [node name="Tree5" parent="YSort/Trees" instance=ExtResource( 4 )]
-position = Vector2( 272, 96 )
+position = Vector2( 305, 109 )
 
 [node name="Tree6" parent="YSort/Trees" instance=ExtResource( 4 )]
-position = Vector2( 278, 117 )
-
-[node name="Tree7" parent="YSort/Trees" instance=ExtResource( 4 )]
-position = Vector2( 282, 146 )
+position = Vector2( 305, 130 )
 
 [node name="Bushes" type="YSort" parent="YSort"]
 
 [node name="Bush" parent="YSort/Bushes" instance=ExtResource( 3 )]
-position = Vector2( 192, 80 )
+position = Vector2( 131, 141 )
 
 [node name="Bush2" parent="YSort/Bushes" instance=ExtResource( 3 )]
-position = Vector2( 128, 128 )
-
-[node name="Bush3" parent="YSort/Bushes" instance=ExtResource( 3 )]
-position = Vector2( 144, 144 )
+position = Vector2( 88, 103 )
 
 [node name="Bush4" parent="YSort/Bushes" instance=ExtResource( 3 )]
-position = Vector2( 96, 84 )
+position = Vector2( 63, 112 )
 
 [node name="Bush5" parent="YSort/Bushes" instance=ExtResource( 3 )]
-position = Vector2( 112, 68 )
+position = Vector2( 76, 89 )
 
 [node name="Grass" type="YSort" parent="YSort"]
 
@@ -95,9 +104,5 @@ position = Vector2( 64, 48 )
 [node name="Grass7" parent="YSort/Grass" instance=ExtResource( 5 )]
 position = Vector2( 176, 128 )
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-collision_layer = 2
-collision_mask = 0
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-polygon = PoolVector2Array( -32, 0, 0, 0, 0, 176, 320, 176, 320, 0, -64, 0, -64, -32, 352, -32, 352, 208, -32, 208 )
+[node name="DirtWallTiles" parent="." instance=ExtResource( 7 )]
+tile_data = PoolIntArray( -1, 0, 0, -65536, 0, 1, -65535, 0, 1, -65534, 0, 5, -65533, 0, 196609, -65532, 0, 196609, -65531, 0, 196609, -65530, 0, 196609, -65529, 0, 196609, -65528, 0, 196609, -65527, 0, 7, 65535, 0, 65536, 0, 0, 65541, 1, 0, 131073, 2, 0, 131074, 9, 0, 196612, 10, 0, 7, 131071, 0, 65540, 65536, 0, 131074, 65546, 0, 65539, 196607, 0, 65539, 131082, 0, 65539, 262143, 0, 65539, 196613, 0, 0, 196614, 0, 2, 196618, 0, 65539, 327679, 0, 65539, 262149, 0, 65536, 262150, 0, 65538, 262154, 0, 65539, 393215, 0, 131076, 327680, 0, 1, 327681, 0, 1, 327682, 0, 1, 327683, 0, 1, 327684, 0, 1, 327685, 0, 131078, 327686, 0, 131077, 327687, 0, 1, 327688, 0, 1, 327689, 0, 1, 327690, 0, 131079, 458751, 0, 131072, 393216, 0, 131073, 393217, 0, 131073, 393218, 0, 131073, 393219, 0, 131073, 393220, 0, 131073, 393221, 0, 131073, 393222, 0, 131073, 393223, 0, 131073, 393224, 0, 131073, 393225, 0, 131073, 393226, 0, 131074 )

@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-const ACCELERATION = 400
+const ACCELERATION = 300
 const MAX_SPEED = 50
 
 enum {
@@ -19,6 +19,7 @@ onready var softCollision = $SoftCollision
 onready var playerDetectionZone = $PlayerDetectionZone
 onready var stateTimer = $StateTimer
 onready var wanderController = $WanderController
+onready var stats = $Stats
 
 func _physics_process(delta):
 	
@@ -39,7 +40,7 @@ func _physics_process(delta):
 			if stateTimer.time_left == 0:
 				state = Utils.choose([IDLE, WANDER])
 				stateTimer.start(rand_range(1, 3))
-			accelerate_to_point(wanderController.get_target_position(), ACCELERATION)
+			accelerate_to_point(wanderController.get_target_position(), ACCELERATION * delta)
 			if (wanderController.get_target_position() - global_position).length() < 4:
 				state = Utils.choose([IDLE, WANDER])
 				stateTimer.start(rand_range(1, 3))
@@ -47,7 +48,7 @@ func _physics_process(delta):
 		CHASE:
 			var player = playerDetectionZone.get_player()
 			if player != null:
-				accelerate_to_point(player.global_position, ACCELERATION)
+				accelerate_to_point(player.global_position, ACCELERATION * delta)
 			else:
 				state = IDLE
 	
@@ -73,9 +74,14 @@ func accelerate_to_point(point, acceleration_scalar):
 	accelerate(acceleration_vector)
 
 func update_position():
-	velocity = move_and_slide(velocity + knockback)
+	knockback = move_and_slide(knockback)
+	velocity = move_and_slide(velocity)
 
 func _on_Hurtbox_area_entered(area):
 	# Knockback
 	var knockback_vector = area.get_parent().get_parent().roll_vector # TODO: Clean this
 	knockback = knockback_vector * 400
+	stats.health -= 1
+
+func _on_Stats_no_health():
+	queue_free()
