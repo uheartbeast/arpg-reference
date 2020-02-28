@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://HeatlhUI.tscn" type="PackedScene" id=1]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="HeatlhUI" parent="." instance=ExtResource( 1 )]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 64.0
+margin_bottom = 15.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+max_hearts = 4

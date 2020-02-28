@@ -1,11 +1,8 @@
-[gd_scene load_steps=2 format=2]
-
-[ext_resource path="res://Effect.gd" type="Script" id=1]
+[gd_scene format=2]
 
 [node name="Effect" type="Node2D"]
-script = ExtResource( 1 )
+z_index = 2
 
 [node name="Sprite" type="Sprite" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

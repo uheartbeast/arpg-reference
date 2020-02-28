@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Sprites/World/GrassTile.png" type="Texture" id=1]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Bat.tscn" type="PackedScene" id=6]
 [ext_resource path="res://DirtWallTiles.tscn" type="PackedScene" id=7]
 [ext_resource path="res://DirtPathTiles.tscn" type="PackedScene" id=8]
+[ext_resource path="res://UI.tscn" type="PackedScene" id=9]
 
 [node name="World" type="Node2D"]
 __meta__ = {
@@ -50,7 +51,7 @@ remote_path = NodePath("../../../Camera2D")
 position = Vector2( 256, 40 )
 
 [node name="Bat2" parent="YSort" instance=ExtResource( 6 )]
-position = Vector2( 16, 160 )
+position = Vector2( 32, 128 )
 
 [node name="Trees" type="YSort" parent="YSort"]
 
@@ -108,3 +109,5 @@ position = Vector2( 64, 48 )
 
 [node name="Grass7" parent="YSort/Grass" instance=ExtResource( 5 )]
 position = Vector2( 176, 128 )
+
+[node name="UI" parent="." instance=ExtResource( 9 )]

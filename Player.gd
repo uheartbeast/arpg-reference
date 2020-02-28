@@ -24,6 +24,9 @@ onready var animationTree = $AnimationTree
 onready var softCollision = $SoftCollision
 onready var animationState = animationTree.get("parameters/playback")
 
+func _ready():
+	PlayerStats.connect("no_health", self, "queue_free")
+
 func _process(delta):
 	knockback = knockback.linear_interpolate(Vector2.ZERO, 0.2)
 	
@@ -132,6 +135,7 @@ func end_roll():
 
 func _on_Hurtbox_area_entered(area):
 	if invincible != true:
+		PlayerStats.health -= 1
 		knockback = (global_position - area.global_position).normalized() * 200
 		$HitAnimationPlayer.play("Blink")
 		invincible = true

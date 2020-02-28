@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Sprites/Enemies/Bat.png" type="Texture" id=1]
 [ext_resource path="res://Sprites/Misc/SmallShadow.png" type="Texture" id=2]
@@ -8,12 +8,16 @@
 [ext_resource path="res://PlayerDetectionZone.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Hitbox.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Stats.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Shader.tres" type="Shader" id=9]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 9 )
+shader_param/active = false
+
+[sub_resource type="CircleShape2D" id=2]
 radius = 6.0
 
-[sub_resource type="Animation" id=2]
-resource_name = "Fly"
+[sub_resource type="Animation" id=3]
 length = 0.5
 loop = true
 tracks/0/type = "value"
@@ -29,17 +33,17 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4 ]
 }
 
-[sub_resource type="CircleShape2D" id=3]
+[sub_resource type="CircleShape2D" id=4]
 radius = 4.0
 
-[sub_resource type="CapsuleShape2D" id=4]
+[sub_resource type="CapsuleShape2D" id=5]
 radius = 6.0
 height = 6.0
 
-[sub_resource type="CircleShape2D" id=5]
+[sub_resource type="CircleShape2D" id=6]
 radius = 80.0
 
-[sub_resource type="GDScript" id=6]
+[sub_resource type="GDScript" id=7]
 script/source = "extends Node2D
 
 onready var start_position = global_position
@@ -56,8 +60,24 @@ func _on_StateTimer_timeout():
 	update_target_position()
 "
 
-[sub_resource type="CircleShape2D" id=7]
+[sub_resource type="CircleShape2D" id=8]
 radius = 4.0
+
+[sub_resource type="Animation" id=9]
+resource_name = "Hit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ true, false, true, false ]
+}
 
 [node name="Bat" type="KinematicBody2D"]
 collision_layer = 16
@@ -68,6 +88,7 @@ script = ExtResource( 4 )
 max_health = 3
 
 [node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 1 )
 texture = ExtResource( 1 )
 offset = Vector2( 0, -12 )
 hframes = 5
@@ -76,42 +97,45 @@ hframes = 5
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Fly"
-anims/Fly = SubResource( 2 )
+anims/Fly = SubResource( 3 )
 
 [node name="SoftCollision" parent="." instance=ExtResource( 3 )]
 
 [node name="CollisionShape2D" parent="SoftCollision" index="0"]
-shape = SubResource( 3 )
+shape = SubResource( 4 )
 
 [node name="Hurtbox" parent="." instance=ExtResource( 5 )]
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0"]
 position = Vector2( 0, -13 )
-shape = SubResource( 4 )
+shape = SubResource( 5 )
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 6 )]
 position = Vector2( 0, -13 )
 
 [node name="CollisionShape2D" parent="PlayerDetectionZone" index="0"]
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="StateTimer" type="Timer" parent="."]
 one_shot = true
 autostart = true
 
 [node name="WanderController" type="Node2D" parent="."]
-script = SubResource( 6 )
+script = SubResource( 7 )
 
 [node name="Hitbox" parent="." instance=ExtResource( 7 )]
 collision_mask = 4
 
 [node name="CollisionShape2D" parent="Hitbox" index="0"]
 position = Vector2( 0, -16 )
-shape = SubResource( 7 )
+shape = SubResource( 8 )
+
+[node name="HitAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Hit = SubResource( 9 )
 [connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
 [connection signal="timeout" from="StateTimer" to="WanderController" method="_on_StateTimer_timeout"]

@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+const EnemyDeathEffect = preload("res://EnemyDeathEffect.tscn")
 const ACCELERATION = 300
 const MAX_SPEED = 50
 
@@ -20,6 +21,7 @@ onready var playerDetectionZone = $PlayerDetectionZone
 onready var stateTimer = $StateTimer
 onready var wanderController = $WanderController
 onready var stats = $Stats
+onready var hitAnimationPlayer = $HitAnimationPlayer
 
 func _physics_process(delta):
 	
@@ -82,6 +84,10 @@ func _on_Hurtbox_area_entered(area):
 	var knockback_vector = area.get_parent().get_parent().roll_vector # TODO: Clean this
 	knockback = knockback_vector * 400
 	stats.health -= 1
+	hitAnimationPlayer.play("Hit")
 
 func _on_Stats_no_health():
 	queue_free()
+	var effect = EnemyDeathEffect.instance()
+	get_tree().current_scene.add_child(effect)
+	effect.global_position = global_position-Vector2(0, 8)
